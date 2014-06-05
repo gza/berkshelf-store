@@ -1,8 +1,8 @@
 require 'json'
 require 'test/unit'
-require 'berkshelf-repo'
+require 'berkshelf-store'
 
-class BerkshelfRepoTest < Test::Unit::TestCase
+class BerkshelfRepoBackendsFilesystemTest < Test::Unit::TestCase
 
   def setup
     @test_dir = File.dirname(__FILE__)
@@ -23,7 +23,7 @@ class BerkshelfRepoTest < Test::Unit::TestCase
 
   def test_store
     clean()
-    repo=BerkshelfRepo.new(@path,@tmp)
+    repo=BerkshelfStore::Backends::Filesystem.new(@path,@tmp)
     assert( repo.store(@example[:content], @example[:name], @example[:vesion]) )
     cbdir = "#{@path}/#{@example[:name]}/#{@example[:vesion]}"
     json_name = "#{cbdir}/data.json"
