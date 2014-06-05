@@ -55,7 +55,7 @@ module BerkshelfStore::Backends
   
       File.rename("#{tmp_dir}/cookbook.tgz", "#{data_dir}/#{name}-#{version}.tgz")
   
-      return true
+      return json_data
     end
   
     def cookbook_data(cookbook)
@@ -92,6 +92,18 @@ module BerkshelfStore::Backends
         tarfile.close unless tarfile == nil
       end
   
+    end
+
+    def last_error
+      @error
+    end
+
+    def get_json(name, version)
+      File.open("#{@path}/#{name}/#{version}/data.json", "r").read
+    end
+
+    def get_catalog
+      {fake:""}
     end
   end
 end
