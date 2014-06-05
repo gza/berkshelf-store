@@ -91,7 +91,6 @@ module BerkshelfStore::Backends
       ensure
         tarfile.close unless tarfile == nil
       end
-  
     end
 
     def last_error
@@ -103,7 +102,13 @@ module BerkshelfStore::Backends
     end
 
     def get_catalog
-      {fake:""}
+      retval = {}
+      Dir["#{@path}/*/*/data.json"].each do |json_file|
+         data = JSON.parse(File.read("#{json_file}"))
+	 retval[data['name']] ||= Hash.new
+	 retval[data['name']][data['version']] = data['data']
+      end
+      retval
     end
   end
 end

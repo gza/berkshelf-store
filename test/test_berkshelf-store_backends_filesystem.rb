@@ -6,12 +6,18 @@ class BerkshelfRepoBackendsFilesystemTest < Test::Unit::TestCase
 
   def setup
     @test_dir = File.dirname(__FILE__)
-    @tmp="#{@test_dir}/tmp"
-    @path="#{@test_dir}/path"
-    @example = Hash.new
-    @example[:name] = 'couchbase'
-    @example[:vesion] = '1.2.0'
-    @example[:content] = File.read("#{@test_dir}/data/couchbase-v1.2.0.tar.gz")
+    @tarballs = "#{@test_dir}/data/tarballs"
+    @dataarbo = "#{@test_dir}/data/arbo"
+    @tmp="#{@test_dir}/tmp/tmp"
+    @path="#{@test_dir}/tmp/path"
+
+    #test_cases
+    @test_case = Hash.new
+    @test_case[:couchbase_1_2_0] = Hash.new
+    @test_case[:couchbase_1_2_0][:name] = 'couchbase'
+    @test_case[:couchbase_1_2_0][:version] = '1.2.0'
+    @test_case[:couchbase_1_2_0][:content] = File.read("#{@tarballs}/couchbase-v1.2.0.tar.gz")
+    @test_case[:couchbase_1_2_0][:json] = File.read("#{@dataarbo}/cookbooks/couchbase/1.2.0/data.json")
   end
 
   def clean
@@ -23,31 +29,34 @@ class BerkshelfRepoBackendsFilesystemTest < Test::Unit::TestCase
 
   def test_store
     clean()
-    repo=BerkshelfStore::Backends::Filesystem.new(@path,@tmp)
-    assert( repo.store(@example[:content], @example[:name], @example[:vesion]) )
-    cbdir = "#{@path}/#{@example[:name]}/#{@example[:vesion]}"
-    json_name = "#{cbdir}/data.json"
+    
+    @test_case.values.each do |cookbook|
+      repo=BerkshelfStore::Backends::Filesystem.new(@path,@tmp)
 
-    data = JSON.parse(File.read("#{json_name}"))
-    assert_equal(data,{"name" => "couchbase",
-                       "version" => "1.2.0",
-		       "data" => {
-		         "endpoint_priority" => 0,
-			 "platforms" => {
-			   "amazon" => ">= 0.0.0",
-   			   "centos" => ">= 0.0.0",
-      			   "debian" => ">= 0.0.0",
-   			   "oracle" => ">= 0.0.0",
-   			   "redhat" => ">= 0.0.0",
-   			   "scientific" => ">= 0.0.0",
-   			   "ubuntu" => ">= 0.0.0",
-   			   "windows" => ">= 0.0.0"
-                        },
-            "dependencies" => {
-                "apt" => ">= 0.0.0",
-                "openssl" => ">= 0.0.0",
-                "windows" => ">= 0.0.0",
-                "yum" => ">= 0.0.0"
-            },"location_type" => "file_store","location_path" => "/couchbase/1.2.0/couchbase-1.2.0.tgz"}})
+      cbdir = "#{@path}/#{cookbook[:name]}/#{cookbook[:version]}"
+      #Must not exists before
+      assert(! File.exists?(cbdir))
+
+      result_store = repo.store(cookbook[:content], cookbook[:name], cookbook[:version])
+
+      assert(File.exists?(cbdir))
+      assert(File.exists?("#{cbdir}/#{cookbook[:name]}-#{cookbook[:version]}.tgz"))
+      assert(File.exists?("#{cbdir}/data.json"))
+      
+      assert( result_store )
+
+      generated_data = JSON.parse(File.read("#{cbdir}/data.json"))
+      control_data = JSON.parse(cookbook[:json])
+      assert_equal(control_data, generated_data)
+    end 
+  end
+
+  def test_get_catalog
+    clean()
+
+    repo=BerkshelfStore::Backends::Filesystem.new("#{@dataarbo}/cookbooks", @tmp)
+    generated_data = repo.get_catalog()
+    control_data = JSON.parse(File.read("#{@test_dir}/data/catalog.json"))
+    assert_equal(control_data, generated_data)
   end
 end

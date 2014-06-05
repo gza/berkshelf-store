@@ -1,8 +1,10 @@
 require 'sinatra/base'
+require 'sinatra/json'
 #require 'berkshelf-store'
 
 module BerkshelfStore
   class Webservice < Sinatra::Base
+    helpers Sinatra::JSON
 
     get "/ping" do
       "It's alive!!"
@@ -10,7 +12,7 @@ module BerkshelfStore
 
     get "/v1" do
       storage = BerkshelfStore::Backends::Filesystem.new(settings.datadir, settings.tmpdir)
-      storage.get_catalog()
+      json storage.get_catalog()
     end
 
     post "/v1/cookbooks/:name/:version" do
