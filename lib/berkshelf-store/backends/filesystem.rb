@@ -74,7 +74,7 @@ module BerkshelfStore::Backends
           "endpoint_priority" => 0,
           "platforms" => platforms,
           "dependencies" => dependencies,
-          "location_type" => 'file_store',
+          "location_type" => 'uri',
           "location_path" => path
         }
       }
@@ -101,10 +101,15 @@ module BerkshelfStore::Backends
       File.open("#{@path}/#{name}/#{version}/data.json", "r").read
     end
 
-    def get_catalog
+    def get_tarball(name, version)
+      File.open("#{@path}/#{name}/#{version}/#{name}-#{version}.tgz").read
+    end
+
+    def get_catalog(prefix)
       retval = {}
       Dir["#{@path}/*/*/data.json"].each do |json_file|
          data = JSON.parse(File.read("#{json_file}"))
+	 data['data']['location_path'] = "#{prefix}#{data['data']['location_path']}"
 	 retval[data['name']] ||= Hash.new
 	 retval[data['name']][data['version']] = data['data']
       end

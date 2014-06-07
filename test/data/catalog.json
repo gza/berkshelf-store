@@ -7,8 +7,8 @@
                 "pacman": ">= 0.0.0"
             },
             "endpoint_priority": 0,
-            "location_path": "/apache2/1.10.4/apache2-1.10.4.tgz",
-            "location_type": "file_store",
+            "location_path": "http://localhost/apache2/1.10.4/apache2-1.10.4.tgz",
+            "location_type": "uri",
             "platforms": {
                 "amazon": ">= 0.0.0",
                 "arch": ">= 0.0.0",
@@ -31,8 +31,8 @@
                 "yum": ">= 0.0.0"
             },
             "endpoint_priority": 0,
-            "location_path": "/couchbase/1.1.0/couchbase-1.1.0.tgz",
-            "location_type": "file_store",
+            "location_path": "http://localhost/couchbase/1.1.0/couchbase-1.1.0.tgz",
+            "location_type": "uri",
             "platforms": {
                 "amazon": ">= 0.0.0",
                 "centos": ">= 0.0.0",
@@ -52,8 +52,8 @@
                 "yum": ">= 0.0.0"
             },
             "endpoint_priority": 0,
-            "location_path": "/couchbase/1.2.0/couchbase-1.2.0.tgz",
-            "location_type": "file_store",
+            "location_path": "http://localhost/couchbase/1.2.0/couchbase-1.2.0.tgz",
+            "location_type": "uri",
             "platforms": {
                 "amazon": ">= 0.0.0",
                 "centos": ">= 0.0.0",

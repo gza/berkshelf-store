@@ -55,7 +55,7 @@ class BerkshelfRepoBackendsFilesystemTest < Test::Unit::TestCase
     clean()
 
     repo=BerkshelfStore::Backends::Filesystem.new("#{@dataarbo}/cookbooks", @tmp)
-    generated_data = repo.get_catalog()
+    generated_data = repo.get_catalog("http://localhost")
     control_data = JSON.parse(File.read("#{@test_dir}/data/catalog.json"))
     assert_equal(control_data, generated_data)
   end
