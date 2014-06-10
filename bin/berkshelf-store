@@ -41,8 +41,6 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-p options
-
 #The only way I found to pass options to configure
 ENV['LOGGER_TYPE'] ||= options.delete(:logger_type)
 ENV['LOGGER_CONF'] ||= options.delete(:logger_conf)
