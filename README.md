@@ -1,13 +1,22 @@
 berkshelf-store
 ===============
 
-A cookbook store compatible with berkshelf API
+A cookbook store compatible with berkshelf API.
+
+Currently it is a simple webservice :
+* POST /v1/cookbooks/$Name/$Version
+ * cookbook param contains tgz
+* GET /v1/universe
+ * this is berkshelf API
+* GET /v1/cookbooks/$Name/$Version/$Name-$Version.tgz
+ * this is how berkshelf gets the cookbook
 
 Status
 ------
 
 work in progress...
 
+It is my first ruby project, any advise is welcome :)
 
 Install
 -------
