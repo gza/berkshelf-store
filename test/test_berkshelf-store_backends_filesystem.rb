@@ -51,6 +51,20 @@ class BerkshelfRepoBackendsFilesystemTest < Test::Unit::TestCase
     end 
   end
 
+  def test_store_bad_tgz
+    clean()
+    repo=BerkshelfStore::Backends::Filesystem.new(@path,@tmp)
+    result_store = repo.store("this is not tgz data, hi hi", "toto", "0.0.0")
+    assert( result_store.key?('fail') )
+  end
+
+  def test_store_not_cookbook_tgz
+    clean()
+    repo=BerkshelfStore::Backends::Filesystem.new(@path,@tmp)
+    result_store = repo.store(File.read("#{@tarballs}/not_a_cookbook.tgz"), "toto", "0.0.0")
+    assert( result_store.key?('fail') )
+  end
+
   def test_get_catalog
     clean()
 

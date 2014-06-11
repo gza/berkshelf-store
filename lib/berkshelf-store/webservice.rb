@@ -36,6 +36,9 @@ module BerkshelfStore
 
     get "/ping" do
       logger.info 'ping'
+      json {info:'berkshelf-store',
+            version:'it would be nice to show it :)',
+            status:'seems to work :)'}
     end
 
     get "/v1/universe" do
@@ -49,21 +52,22 @@ module BerkshelfStore
         storage = BerkshelfStore::Backends::Filesystem.new(settings.datadir, settings.tmpdir)
         storage.get_tarball(params[:name],params[:version])
       else
-        halt 400, "cookbook name should be name-version.tgz"
+        halt 400, json {'fail' => 'cookbook name should be name-version.tgz'}
       end
     end
 
     post "/v1/cookbooks/:name/:version" do
       if params.key?("cookbook") && params.key?("name") && params.key?("version")
         storage = BerkshelfStore::Backends::Filesystem.new(settings.datadir, settings.tmpdir)
-        jsondata = storage.store(params["cookbook"][:tempfile].read, params[:name], params[:version])
-        if jsondata.size > 10
-          jsondata
+        cookbook_data = storage.store(params["cookbook"][:tempfile].read, params[:name], params[:version])
+        puts cookbook_data
+        if cookbook_data.key?('name')
+          json cookbook_data
         else
-          halt 500, storage.last_error
+          halt 500, json cookbook_data
         end
       else
-        halt 500, 'Wrong parameters'
+        halt 400, json {'fail' => 'Wrong parameters'}
       end
     end
 
