@@ -31,20 +31,25 @@ module BerkshelfStore
       end
       use ::Rack::CommonLogger, logger
       set :logger, logger
+
+      #static files (UI) stuff
+      #et :public_folder, BerkshelfStore::ROOT + '/www/static'
+
     end
     set :prefix, "/"
+    set :public_folder, BerkshelfStore::ROOT + '/www/static'
 
     get "/ping" do
       logger.info 'ping'
-      json {info:'berkshelf-store',
-            version:'it would be nice to show it :)',
-            status:'seems to work :)'}
+      json({'info'    => 'berkshelf-store',
+            'version' => 'it would be nice to show it :)',
+            'status'  => 'seems to work :)'})
     end
 
     get "/v1/universe" do
       cookbooks_url_prefix = "#{request.base_url}/v1/cookbooks"
       storage = BerkshelfStore::Backends::Filesystem.new(settings.datadir, settings.tmpdir)
-      json storage.get_catalog(cookbooks_url_prefix)
+      json(storage.get_catalog(cookbooks_url_prefix))
     end
 
     get "/v1/cookbooks/:name/:version/:filename" do
@@ -52,7 +57,7 @@ module BerkshelfStore
         storage = BerkshelfStore::Backends::Filesystem.new(settings.datadir, settings.tmpdir)
         storage.get_tarball(params[:name],params[:version])
       else
-        halt 400, json {'fail' => 'cookbook name should be name-version.tgz'}
+        halt 400, json({'fail' => 'cookbook name should be name-version.tgz'})
       end
     end
 
@@ -64,10 +69,10 @@ module BerkshelfStore
         if cookbook_data.key?('name')
           json cookbook_data
         else
-          halt 500, json cookbook_data
+          halt 500, json(cookbook_data)
         end
       else
-        halt 400, json {'fail' => 'Wrong parameters'}
+        halt 400, json({'fail' => 'Wrong parameters'})
       end
     end
 
