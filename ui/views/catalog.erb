@@ -1,0 +1,55 @@
+<h1>Cookbook catalog</h1>
+<div id="cookbooks"></div>
+
+<script>
+  function sort_version(v_a, v_b) {
+        //cookbook versions are N.N.N
+        //Sort desc
+        if (v_a === v_b) { return 0; }
+
+        var a = v_a.split('.');
+        var b = v_b.split('.');
+        for (var i = 0; i < 3; ++i) {
+            var diff = Number(b[i]) - Number(a[i]);
+            if (diff != 0) { return diff };
+        }
+        console.log('sort_version('+v_a+','+v_b+') : compare fail');
+        return 0;
+    }
+
+  $.getJSON('/v1/universe', {}, function(data) {
+     //sort cookbooks by name
+     var cookbooks = Object.keys(data).sort();
+     for (var i in cookbooks) {
+       var cookbook=cookbooks[i];
+
+       var cookbook_head = $('<h1>'+cookbook+'</h1>');
+       cookbook_head.appendTo('#cookbooks');
+
+       var versions = Object.keys(data[cookbook]).sort(sort_version);
+       for (var j in versions) {
+         var version = versions[j];
+	 var detail = data[cookbook][version];
+
+         var version_head = $('<h2 align="right">'+version+'</h2>');
+         version_head.appendTo('#cookbooks');
+
+	 desc=$('<dl></dl>');
+	 $('<dt>platforms :</dt>').appendTo(desc);
+	 $('<dd>'+JSON.stringify(detail.platforms)+'</dt>').appendTo(desc);
+
+	 $('<dt>dependencies :</dt>').appendTo(desc);
+	 $('<dd>'+JSON.stringify(detail.dependencies)+'</dt>').appendTo(desc);
+
+	 $('<dt>download :</dt>').appendTo(desc);
+	 $('<dd><a href="'+detail.location_path+'">'+detail.location_path+'</a></dt>').appendTo(desc);
+         desc_div=$('<div class="container highlight" style="background-color: #eee;"></div>');
+	 desc.appendTo(desc_div);
+	 desc_div.appendTo('#cookbooks');
+         
+
+
+       };
+     };
+    }); 
+</script>

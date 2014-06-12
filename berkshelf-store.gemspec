@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "berkshelf-store"
-  s.version     = "0.1.0"
+  s.version     = "0.2.0"
   s.authors     = ["Guillaume Zitta"]
   s.email       = ["github.guillaume@zitta.fr"]
   s.homepage    = "https://github.com/gza/berkshelf-store"
@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "berkshelf-store"
 
-  s.files         = `git ls-files`.split("\n")
+  s.files         = `git ls-files`.split("\n") + Dir.glob("{ui}/**/*")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]

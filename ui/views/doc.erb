@@ -1,0 +1,23 @@
+<h1>Documentation</h1>
+<h2>Berkshelf</h2>
+Use this service as Berkshelf source :
+<pre>
+source "<%=@site_prefix%><%=@ws_prefix%>/universe"
+</pre>
+<h2>Load cookbooks</h2>
+<h3>by api</h3>
+<pre>
+POST <%=@site_prefix%><%=@ws_prefix%>/cookbooks/$NAME/$VERSION
+
+with tgz content in "cookbook" param
+</pre>
+<h3>by curl</h3>
+<pre>
+curl -F cookbook=@/path/to/the/cookbook.tgz <%=@site_prefix%><%=@ws_prefix%>/cookbooks/$NAME/$VERSION
+</pre>
+free trick : copy a cookbook from opscode... in bash
+<pre>
+cookbook=apt; version=2.3.10; curl -L http://community.opscode.com/cookbooks/$cookbook/versions/${version//./_}/downloads | curl -F cookbook=@- <%=@site_prefix%><%=@ws_prefix%>/cookbooks/${cookbook}/${version}
+</pre>
+<h3>by upload form</h3>
+<a href="upload.html">Upload page</a>

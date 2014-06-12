@@ -37,7 +37,9 @@ module BerkshelfStore
 
     end
     set :prefix, "/"
-    set :public_folder, BerkshelfStore::ROOT + '/www/static'
+    set :public_folder, BerkshelfStore::ROOT + '/ui/static'
+    set :views, BerkshelfStore::ROOT + '/ui/views'
+
 
     get "/ping" do
       logger.info 'ping'
@@ -65,7 +67,6 @@ module BerkshelfStore
       if params.key?("cookbook") && params.key?("name") && params.key?("version")
         storage = BerkshelfStore::Backends::Filesystem.new(settings.datadir, settings.tmpdir)
         cookbook_data = storage.store(params["cookbook"][:tempfile].read, params[:name], params[:version])
-        puts cookbook_data
         if cookbook_data.key?('name')
           json cookbook_data
         else
@@ -73,6 +74,25 @@ module BerkshelfStore
         end
       else
         halt 400, json({'fail' => 'Wrong parameters'})
+      end
+    end
+
+    get "/" do
+      redirect "/index.html"
+    end
+
+    get "/:name.html" do
+      @site_prefix="#{request.base_url}"
+      @ws_prefix="/v1"
+      @active="#{params[:name]}" 
+      if params[:name] == 'index'
+        erb :catalog
+      elsif params[:name] == 'upload'
+        erb :upload
+      elsif params[:name] == 'doc'
+        erb :doc
+      else
+        halt 404, "<h1>page #{params[:name]}.html not found</h1>"
       end
     end
 

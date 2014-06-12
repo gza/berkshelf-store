@@ -20,6 +20,13 @@ work in progress...
 
 It is my first ruby project, any advise is welcome :)
 
+Features
+--------
+
+* Upload API
+* UI
+* Syslog logging
+
 Why would I need this ?
 -----------------------
 
@@ -36,7 +43,7 @@ Yes there is berkshelf-api, but it needs a chef server :
 Install
 -------
 
-    gem build berkshelf-store.gemspec
+    rake
     gem install berkshelf-store-*.gem
 
 
@@ -45,7 +52,7 @@ Usage
 
 ### Launch the deamon
 
-    Usage: berkshelf-store.rb [options]
+    Usage: berkshelf-store [options]
         -D, --datadir DIRECTORY          Data directory (default: ./datadir)
         -T, --tmpdir DIRECTORY           Tmp directory (default: ./tmpdir)
         -b, --bind IP                    bind IP (default: 127.0.0.1)
@@ -59,7 +66,13 @@ Example:
 
 ### upload some cookbooks
 
+bash style :
+
     curl -F cookbook=@/path/to/the/cookbook.tgz http://localhost/v1/cookbooks/cookbookname/cookbookversion
+
+or by UI:
+
+    http://localhost/upload.html
 
 ### use it with berkshelf
 
@@ -69,15 +82,18 @@ in the berkfile:
 
     cookbook "cookbookname"
 
+### Explode available cookbooks dy ui
+
+    http://localhost/
+
 TODO:
 -----
 
 by priority
 
 - more Comments and tests
-- cli (knife or beks plugin) for uploading
 - Auth
 - ACL (limit uploads by cookbook/users/groups)
-- UI
+- cli (knife or berks plugin) for uploading
 - multi-tenancy ?
 - clusterized/cloudified backend (mongo, S3, whatelse ?)
