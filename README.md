@@ -16,7 +16,9 @@ Storage is a simple directory tree (easy to backup)
 Status
 ------
 
-work in progress...
+* It works, basicly
+* It's still a work in progress
+* API is not stable
 
 It is my first ruby project, any advise is welcome :)
 
@@ -43,9 +45,7 @@ Yes there is berkshelf-api, but it needs a chef server :
 Install
 -------
 
-    rake
-    gem install berkshelf-store-*.gem
-
+    gem install berkshelf-store
 
 Usage
 -----
