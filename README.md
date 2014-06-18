@@ -1,5 +1,5 @@
-berkshelf-store
-===============
+# berkshelf-store [![Gem Version](https://badge.fury.io/rb/berkshelf-store.svg)](http://badge.fury.io/rb/berkshelf-store)
+
 
 A cookbook store compatible with berkshelf API.
 
