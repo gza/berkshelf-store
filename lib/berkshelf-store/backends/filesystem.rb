@@ -74,6 +74,7 @@ module BerkshelfStore::Backends
         return {"fail" => "tarball store failed #{e}"}
       end
 
+      FileUtils.rm_rf("#{tmp_dir}")
       return data
     end
   

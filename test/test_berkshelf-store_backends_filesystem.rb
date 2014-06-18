@@ -53,6 +53,9 @@ class BerkshelfRepoBackendsFilesystemTest < Test::Unit::TestCase
       generated_data = JSON.parse(File.read("#{cbdir}/data.json"))
       control_data = JSON.parse(cookbook[:json])
       assert_equal(control_data, generated_data)
+
+      #Ensure cleaning is done
+      assert(Dir["#{@tmp}/*"].size == 0)
     end 
   end
 
