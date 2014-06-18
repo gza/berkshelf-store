@@ -1,9 +1,10 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
+require 'berkshelf-store'
 
 Gem::Specification.new do |s|
   s.name        = "berkshelf-store"
-  s.version     = "0.2.0"
+  s.version     = BerkshelfStore::VERSION
   s.authors     = ["Guillaume Zitta"]
   s.email       = ["github.guillaume@zitta.fr"]
   s.homepage    = "https://github.com/gza/berkshelf-store"
@@ -23,4 +24,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'sinatra-contrib', '>=1.4.2'
 
   s.add_development_dependency 'rake'
+  s.add_development_dependency 'bundler'
 end

@@ -18,6 +18,11 @@ class BerkshelfRepoBackendsFilesystemTest < Test::Unit::TestCase
     @test_case[:couchbase_1_2_0][:version] = '1.2.0'
     @test_case[:couchbase_1_2_0][:content] = File.read("#{@tarballs}/couchbase-v1.2.0.tar.gz")
     @test_case[:couchbase_1_2_0][:json] = File.read("#{@dataarbo}/cookbooks/couchbase/1.2.0/data.json")
+    @test_case[:apache2_1_10_4] = Hash.new
+    @test_case[:apache2_1_10_4][:name] = 'apache2'
+    @test_case[:apache2_1_10_4][:version] = '1.10.4'
+    @test_case[:apache2_1_10_4][:content] = File.read("#{@tarballs}/apache2-v1.10.4-nosubdir.tar.gz")
+    @test_case[:apache2_1_10_4][:json] = File.read("#{@dataarbo}/cookbooks/apache2/1.10.4/data.json")
   end
 
   def clean

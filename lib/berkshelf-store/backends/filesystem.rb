@@ -39,7 +39,7 @@ module BerkshelfStore::Backends
       end
   
       #locate check cookbook
-      search_root = Dir["#{tmp_dir}/cookbook/*/metadata.rb"]
+      search_root = Dir["#{tmp_dir}/cookbook/*/metadata.rb", "#{tmp_dir}/cookbook/metadata.rb"]
       if search_root.size != 1
         return {"fail" => "tgz don't contains one and only on */metadata.rb"}
       end
