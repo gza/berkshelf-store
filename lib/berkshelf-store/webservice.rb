@@ -63,10 +63,10 @@ module BerkshelfStore
       end
     end
 
-    post "/v1/cookbooks/:name/:version" do
-      if params.key?("cookbook") && params.key?("name") && params.key?("version")
+    post "/v1/cookbooks" do
+      if params.key?("cookbook")
         storage = BerkshelfStore::Backends::Filesystem.new(settings.datadir, settings.tmpdir)
-        cookbook_data = storage.store(params["cookbook"][:tempfile].read, params[:name], params[:version])
+        cookbook_data = storage.store(params["cookbook"][:tempfile].read)
         if cookbook_data.key?('name')
           json cookbook_data
         else

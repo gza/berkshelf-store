@@ -19,6 +19,7 @@ Status
 * It works, basicly
 * It's still a work in progress
 * API is not stable
+ * 0.3.0 introduce an upload api modification : no more name and version in path
 
 It is my first ruby project, any advise is welcome :)
 
@@ -68,7 +69,11 @@ Example:
 
 bash style :
 
-    curl -F cookbook=@/path/to/the/cookbook.tgz http://localhost/v1/cookbooks/cookbookname/cookbookversion
+    curl -F cookbook=@/path/to/the/cookbook.tgz http://localhost/v1/cookbooks
+
+    #or if your are in the cookbook :
+
+    tar cvzf - . | curl -F cookbook=@- http://localhost/v1/cookbooks
 
 or by UI:
 

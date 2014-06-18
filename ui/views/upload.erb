@@ -1,24 +1,16 @@
 <br>
 <link href="jquery_file_upload/css/jquery.fileupload.css" rel="stylesheet">
 <form role="form" class="form-horizontal">
-  <div class="form-group">
-    <label class="col-sm-2 control-label" for="name">Cookbook name</label>
-      <input type="text" id="name">
-  </div>
-  <div class="form-group">
-    <label class="col-sm-2 control-label" for="version">Cookbook version</label>
-    <input type="text" id="version">
-  </div>
   <span class="btn btn-success fileinput-button">
     <i class="glyphicon glyphicon-plus"></i>
     <span>Select TGZ</span>
     <!-- The file input field used as target for the file upload widget -->
-    <input id="cookbook" type="file" name="cookbook">
+    <input id="cookbook" type="file" name="cookbook" multiple="">
   </span>
 </div>
 <br>
-<pre id="result">
-</pre>
+<div id="result">
+</div>
 <script src="jquery_file_upload/js/vendor/jquery.ui.widget.js"></script>
 <script src="jquery_file_upload/js/jquery.iframe-transport.js"></script>
 <script src="jquery_file_upload/js/jquery.fileupload.js"></script>
@@ -26,18 +18,15 @@
 <script>
 $(function () {
     $('#cookbook').fileupload({
-        add: function(e, data) {
-          data.url = '<%=@site_prefix%><%=@ws_prefix%>/cookbooks/'+$('input#name').val()+'/'+$('input#version').val()
-          if (data.autoUpload || (data.autoUpload !== false &&
-                $(this).fileupload('option', 'autoUpload'))) {
-            data.process().done(function () {
-              data.submit();
-            });
-          }
-        },
+        url: '<%=@site_prefix%><%=@ws_prefix%>/cookbooks',
         dataType: 'json',
         done: function (e, data) {
-          $('pre#result').text(JSON.stringify(data.result, null, 2));
+                $('<h2>').text('success').appendTo('div#result')
+                $('<pre>').text(JSON.stringify(data.result, null, 2)).appendTo('div#result')
+        },
+        fail: function (e, data) {
+                $('<h2>').text('fail').appendTo('div#result')
+                $('<pre>').text(JSON.stringify(data.jqXHR.responseJSON.fail, null, 2)).appendTo('div#result')
         }
     });
 });

@@ -18,7 +18,7 @@ module BerkshelfStore::Backends
       true
     end
   
-    def store(content, name, version)
+    def store(content)
       data = {}
 
       digest = Digest::SHA256.hexdigest(content)
@@ -49,6 +49,8 @@ module BerkshelfStore::Backends
       begin
         cookbook = Ridley::Chef::Cookbook.from_path(cookbook_dir)
         data = cookbook_data(cookbook)
+        name = data['name']
+        version = data['version']
       rescue Exception => e
         return {"fail" => "Information extraction failed #{e}"}
       end
